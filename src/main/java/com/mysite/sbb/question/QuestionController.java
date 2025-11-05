@@ -58,3 +58,9 @@ public class QuestionController {
         return "question_detail";
     }
 }
+
+@GetMapping("/detail/{id}")
+public String detail(@PathVariable("id") Integer id, Model model, com.mysite.sbb.answer.AnswerForm answerForm) {
+    model.addAttribute("question", questionService.getQuestion(id));
+    return "question_detail";
+}
