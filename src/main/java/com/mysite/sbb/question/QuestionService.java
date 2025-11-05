@@ -6,6 +6,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import java.time.LocalDateTime;
+
+public Question create(String subject, String content) {
+    Question q = new Question();
+    q.setSubject(subject);
+    q.setContent(content);
+    q.setCreateDate(LocalDateTime.now());
+    return questionRepository.save(q);
+}
+
 @RequiredArgsConstructor
 @Service
 public class QuestionService {

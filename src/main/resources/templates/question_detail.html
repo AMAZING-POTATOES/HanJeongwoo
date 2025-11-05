@@ -1,32 +1,51 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>질문 상세</title></head>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title th:fragment="title">질문 상세</title>
+</head>
 <body>
-<h2 th:text="${question.subject}">제목</h2>
-<p th:text="${question.content}">내용</p>
-<p>
-  작성일:
-  <span th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}">2025-01-01</span>
-</p>
+<main layout:fragment="content">
 
-<hr/>
+  <div class="card">
+    <div class="card-header">
+      <h5 class="my-1" th:text="${question.subject}">제목</h5>
+    </div>
+    <div class="card-body">
+      <div class="preline" th:text="${question.content}">내용</div>
+      <div class="text-muted mt-2">
+        작성일: <span th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}">2025-01-01</span>
+      </div>
+    </div>
+  </div>
 
-<h3>
-  <span th:text="${#lists.size(question.answerList)}">0</span>개의 답변이 있습니다.
-</h3>
-<ul>
-  <li th:each="a : ${question.answerList}">
-    <div th:text="${a.content}">답변 내용</div>
-    <small th:text="${#temporals.format(a.createDate,'yyyy-MM-dd HH:mm')}">작성일</small>
-  </li>
-</ul>
+  <div class="card mt-3">
+    <div class="card-header"><strong th:text="${#lists.size(question.answerList)}">0</strong>개의 답변</div>
+    <div class="card-body">
+      <div class="card mb-2" th:each="a : ${question.answerList}">
+        <div class="card-body">
+          <div class="preline" th:text="${a.content}">답변 내용</div>
+          <small class="text-muted" th:text="${#temporals.format(a.createDate,'yyyy-MM-dd HH:mm')}">작성일</small>
+        </div>
+      </div>
 
-<!-- (2-12)에서 사용할 답변 작성 폼 -->
-<form th:action="@{|/answer/create/${question.id}|}" method="post">
-  <textarea name="content" rows="5" cols="60" placeholder="답변을 입력하세요"></textarea><br/>
-  <input type="submit" value="답변 등록"/>
-</form>
+        <form th:action="@{|/answer/create/${question.id}|}"
+        th:object="${answerForm}"
+        method="post" class="mt-3">
+            <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+            <textarea class="form-control form-textarea" th:field="*{content}" placeholder="답변을 입력하세요"></textarea>
+            <button class="btn btn-primary btn-submit" type="submit">답변 등록</button>
+        </form>
 
-<p><a href="/question/list">목록으로</a></p>
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <a class="btn btn-outline-secondary" th:href="@{/question/list}">목록으로</a>
+  </div>
+
+</main>
 </body>
 </html>

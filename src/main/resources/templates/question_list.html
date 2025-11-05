@@ -1,22 +1,30 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>질문 목록</title></head>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title th:fragment="title">질문 목록</title>
+</head>
 <body>
-<h2>Question List</h2>
-<table border="1" cellpadding="6">
-  <thead>
-    <tr><th>ID</th><th>제목</th><th>작성일</th></tr>
-  </thead>
-  <tbody>
-    <tr th:each="question : ${questionList}">
-      <td th:text="${question.id}">1</td>
-      <td>
-        <a th:href="@{|/question/detail/${question.id}|}"
-           th:text="${question.subject}">제목</a>
-      </td>
-      <td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}">2025-01-01</td>
-    </tr>
-  </tbody>
-</table>
+<main layout:fragment="content">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2 class="my-0">Question List</h2>
+    <a class="btn btn-primary" th:href="@{/question/create}">질문 등록하기</a>
+  </div>
+
+  <table class="table table-hover mt-3">
+    <thead class="table-dark">
+      <tr><th>번호</th><th>제목</th><th>작성일</th></tr>
+    </thead>
+    <tbody>
+      <tr th:each="q,loop : ${questionList}">
+        <td th:text="${loop.count}">1</td>
+        <td><a th:href="@{|/question/detail/${q.id}|}" th:text="${q.subject}">제목</a></td>
+        <td th:text="${#temporals.format(q.createDate, 'yyyy-MM-dd HH:mm')}">2025-01-01</td>
+      </tr>
+    </tbody>
+  </table>
+</main>
 </body>
 </html>

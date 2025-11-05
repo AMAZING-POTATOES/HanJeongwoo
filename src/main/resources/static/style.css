@@ -1,0 +1,13 @@
+textarea.form-textarea,
+#answer-textarea {
+  width: 100%;
+  min-height: 160px;
+  box-sizing: border-box;
+}
+.btn-submit {
+  margin-top: 10px;
+}
+
+.card + .card { margin-top: 12px; }
+
+.preline { white-space: pre-line; }
