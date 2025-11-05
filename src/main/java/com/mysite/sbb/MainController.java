@@ -10,6 +10,7 @@ public class MainController {
     @GetMapping("/sbb")
     @ResponseBody
     public String index() {
+        // 브라우저에서 http://localhost:8080/sbb
         return "안녕하세요 sbb에 오신 것을 환영합니다.";
     }
 }
