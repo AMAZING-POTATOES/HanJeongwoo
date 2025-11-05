@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>질문 상세</title></head>
+<body>
+<h2 th:text="${question.subject}">제목</h2>
+<p th:text="${question.content}">내용</p>
+<p>
+  작성일:
+  <span th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}">2025-01-01</span>
+</p>
+
+<hr/>
+
+<h3>
+  <span th:text="${#lists.size(question.answerList)}">0</span>개의 답변이 있습니다.
+</h3>
+<ul>
+  <li th:each="a : ${question.answerList}">
+    <div th:text="${a.content}">답변 내용</div>
+    <small th:text="${#temporals.format(a.createDate,'yyyy-MM-dd HH:mm')}">작성일</small>
+  </li>
+</ul>
+
+<!-- (2-12)에서 사용할 답변 작성 폼 -->
+<form th:action="@{|/answer/create/${question.id}|}" method="post">
+  <textarea name="content" rows="5" cols="60" placeholder="답변을 입력하세요"></textarea><br/>
+  <input type="submit" value="답변 등록"/>
+</form>
+
+<p><a href="/question/list">목록으로</a></p>
+</body>
+</html>
