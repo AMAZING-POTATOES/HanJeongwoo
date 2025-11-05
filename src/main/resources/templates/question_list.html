@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>질문 목록</title></head>
+<body>
+<h2>Question List</h2>
+<table border="1" cellpadding="6">
+  <thead>
+    <tr><th>ID</th><th>제목</th><th>작성일</th></tr>
+  </thead>
+  <tbody>
+    <tr th:each="question : ${questionList}">
+      <td th:text="${question.id}">1</td>
+      <td>
+        <a th:href="@{|/question/detail/${question.id}|}"
+           th:text="${question.subject}">제목</a>
+      </td>
+      <td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}">2025-01-01</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
