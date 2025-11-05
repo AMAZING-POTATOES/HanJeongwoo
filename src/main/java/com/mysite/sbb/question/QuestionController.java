@@ -10,3 +10,11 @@ public class QuestionController {
         return "question_list";
     }
 }
+
+import org.springframework.web.bind.annotation.PathVariable;
+
+@GetMapping("/question/detail/{id}")
+public String detail(@PathVariable("id") Integer id, Model model) {
+    model.addAttribute("question", questionService.getQuestion(id));
+    return "question_detail";
+}
