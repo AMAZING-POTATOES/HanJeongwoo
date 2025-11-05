@@ -2,12 +2,13 @@ package com.mysite.sbb.answer;
 
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.validation.BindingResult;
 
 @RequiredArgsConstructor
 @Controller
@@ -19,12 +20,16 @@ public class AnswerController {
     @PostMapping("/answer/create/{id}")
     public String createAnswer(
             @PathVariable("id") Integer id,
-            @RequestParam("content") String content,
-            RedirectAttributes ra
+            @Valid AnswerForm answerForm,
+            BindingResult bindingResult,
+            Model model
     ) {
         Question q = questionService.getQuestion(id);
-        answerService.create(q, content);
-        ra.addFlashAttribute("msg", "답변이 등록되었습니다.");
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("question", q);
+            return "question_detail";
+        }
+        answerService.create(q, answerForm.getContent());
         return "redirect:/question/detail/" + id;
     }
 }
