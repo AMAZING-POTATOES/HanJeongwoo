@@ -1,30 +1,31 @@
-<!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
-<head>
-  <title th:fragment="title">질문 목록</title>
-</head>
-<body>
-<main layout:fragment="content">
-  <div class="d-flex justify-content-between align-items-center">
-    <h2 class="my-0">Question List</h2>
-    <a class="btn btn-primary" th:href="@{/question/create}">질문 등록하기</a>
-  </div>
+<table class="table table-hover mt-3">
+  <thead class="table-dark">
+    <tr><th>번호</th><th>제목</th><th>작성일</th></tr>
+  </thead>
+  <tbody>
+    <tr th:each="q,loop : ${paging.content}">
+      <!-- 3-03에서 번호 공식으로 교체 예정 -->
+      <td th:text="${loop.count}">1</td>
+      <td><a th:href="@{|/question/detail/${q.id}|}" th:text="${q.subject}">제목</a></td>
+      <td th:text="${#temporals.format(q.createDate, 'yyyy-MM-dd HH:mm')}">2025-01-01</td>
+    </tr>
+  </tbody>
+</table>
 
-  <table class="table table-hover mt-3">
-    <thead class="table-dark">
-      <tr><th>번호</th><th>제목</th><th>작성일</th></tr>
-    </thead>
-    <tbody>
-      <tr th:each="q,loop : ${questionList}">
-        <td th:text="${loop.count}">1</td>
-        <td><a th:href="@{|/question/detail/${q.id}|}" th:text="${q.subject}">제목</a></td>
-        <td th:text="${#temporals.format(q.createDate, 'yyyy-MM-dd HH:mm')}">2025-01-01</td>
-      </tr>
-    </tbody>
-  </table>
-</main>
-</body>
-</html>
+<!-- 페이지 이동 -->
+<ul class="pagination justify-content-center">
+  <li class="page-item" th:classappend="${paging.first} ? 'disabled'">
+    <a class="page-link" th:href="@{|/question/list?page=${paging.number-1}|}">이전</a>
+  </li>
+
+  <li class="page-item"
+      th:each="p : ${#numbers.sequence(0, paging.totalPages-1)}"
+      th:if="${p >= paging.number-5 and p <= paging.number+5}"
+      th:classappend="${p == paging.number} ? 'active'">
+    <a class="page-link" th:text="${p+1}" th:href="@{|/question/list?page=${p}|}">1</a>
+  </li>
+
+  <li class="page-item" th:classappend="${paging.last} ? 'disabled'">
+    <a class="page-link" th:href="@{|/question/list?page=${paging.number+1}|}">다음</a>
+  </li>
+</ul>
