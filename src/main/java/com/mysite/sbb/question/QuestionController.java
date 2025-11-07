@@ -4,6 +4,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@GetMapping("/list")
+public String list(Model model,
+                   @RequestParam(value = "page", defaultValue = "0") int page) {
+    Page<Question> paging = questionService.getList(page);
+    model.addAttribute("paging", paging);
+    return "question_list";
+}
 
 @RequestMapping("/question")
 @RequiredArgsConstructor
