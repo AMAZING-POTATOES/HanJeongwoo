@@ -7,6 +7,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import java.time.LocalDateTime;
+import org.springframework.data.domain.*;
+
+public Page<Question> getList(int page) {
+    Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("createDate")));
+    return questionRepository.findAll(pageable);
+}
+
 
 public Question create(String subject, String content) {
     Question q = new Question();

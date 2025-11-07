@@ -106,4 +106,15 @@ class SbbApplicationTests {
         List<Answer> answers = q.getAnswerList(); 
         assertNotNull(answers);
     }
+    @Test
+    void bulkInsertQuestions() {
+        for (int i = 1; i <= 300; i++) {
+            Question q = new Question();
+            q.setSubject("테스트 질문 " + i);
+            q.setContent("내용 " + i);
+            q.setCreateDate(LocalDateTime.now());
+            questionRepository.save(q);
+        }
+    }
+
 }
